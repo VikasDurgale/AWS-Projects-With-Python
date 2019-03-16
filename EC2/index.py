@@ -53,5 +53,19 @@ def create_key(key_name):
 	key_manager.create_key(key_name)
 
 
+@cli.command('create-tag', context_settings=dict(
+	ignore_unknown_options=True,
+	allow_extra_args=True
+))
+@click.argument('resource_id')
+@click.pass_context
+def create_tag(ctx, resource_id):
+	"""Create's Tag for your EC2 instance."""
+	data = dict()
+	for item in ctx.args:
+		data.update([item.split('=')])
+	ec2_manager.create_tag(resource_id, data)
+
+
 if __name__ == '__main__':
 		cli()
