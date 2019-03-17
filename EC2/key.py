@@ -3,6 +3,8 @@
 # -*- coding: utf-8 -*-
 
 import boto3
+from botocore.exceptions import ClientError
+
 
 class KeyManager:
     """Manage KeyPairs."""
@@ -34,3 +36,14 @@ class KeyManager:
         with open(key_path, 'w') as key_file:
             key_file.write(key_pair.key_material)
             print("Key Created.")
+
+    def check_key(self, key_name):
+        """Check whether the ket exists or not."""
+        try:
+            key = self.ec2.key_pairs.filter(
+                    KeyNames=[key_name]
+                )
+            for k in key:
+                return True
+        except ClientError as error:
+            return False

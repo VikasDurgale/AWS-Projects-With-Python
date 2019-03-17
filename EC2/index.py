@@ -67,5 +67,46 @@ def create_tag(ctx, resource_id):
 	ec2_manager.create_tag(resource_id, data)
 
 
+@cli.command('find-ami-id')
+@click.argument('ami_id')
+@click.argument('region')
+def find_ami_id(ami_id, region):
+	"""Find AMI ID from different region AMI ID."""
+	ec2_manager.find_ami_id(ami_id, region)
+
+
+@cli.command('create-instances')
+@click.option('--volume-size', default='8',
+	help='The size of the volume, in GiB.')
+@click.option('--volume-type', default='gp2',
+	help='The volume type: gp2, io1, st1, sc1, or standard.')
+@click.option('--ami-id', default=None,
+	help='The ID of the AMI.')
+@click.option('--region', default=None,
+	help='Region of ami_id provided.')
+@click.option('--instance-type', default='t2.micro',
+	help='The instance type.')
+@click.option('--key-name', default=None,
+	help='The name of the key pair.')
+@click.option('--max-count', default='1',
+	help='The maximum number of instances to launch.')
+@click.option('--min-count', default='1',
+	help='The minimum number of instances to launch.')
+def create_instances(volume_size, volume_type, ami_id, region, instance_type,
+	key_name, max_count, min_count):
+	"""Create one or more EC2 instances."""
+	if ami_id == None or key_name == None:
+		raise Exception('ami-id not mentioned. check create-instances --help')
+	if key_name == None:
+		raise Exception('key-name not mentioned. check create-instances --help')
+	if region == None:
+		region = session.region_name
+	key = key_manager.check_key(key_name)
+	if key == False:
+		raise Exception("Key not found")
+	ec2_manager.create_instances(volume_size, volume_type, ami_id, region,
+		instance_type, key_name, max_count, min_count)
+
+
 if __name__ == '__main__':
 		cli()
