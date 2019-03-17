@@ -24,12 +24,12 @@ class EC2Manager:
     def create_tag(self, resource_id, data):
         """Create's Tag for your EC2 instance."""
         tags=list()
-        tag_item=dict()
         for item in data.items():
-            tag_item['Key'] = items[0]
-            tag_item['Value'] = items[1]
-            tags.append(tags)
+            tag_item=dict()
+            tag_item['Key'] = item[0]
+            tag_item['Value'] = item[1]
+            tags.append(tag_item)
         self.ec2.create_tags(
-            Resource=[resource_id],
+            Resources=[resource_id],
             Tags=tags
         )

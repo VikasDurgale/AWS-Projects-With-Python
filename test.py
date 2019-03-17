@@ -14,13 +14,13 @@ def cli():
 @click.pass_context
 def test(ctx, id):
     data = dict()
-    tags=dict()
     tag_list = list()
     for item in ctx.args:
         print(item)
         data.update([item.split('=')])
     #print(data)
     for items in data.items():
+        tags=dict()
         #print(items[0] +": "+ items[1])
         tags['Key'] = items[0]
         tags['Value'] = items[1]
