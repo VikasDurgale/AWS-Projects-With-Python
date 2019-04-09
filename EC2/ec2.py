@@ -82,7 +82,8 @@ class EC2Manager:
             InstanceType=instance_type,
             KeyName=key_name,
             MaxCount=int(max_count),
-            MinCount=int(min_count)
+            MinCount=int(min_count),
+            UserData=open("D:\\Training\\Git\\Projects\\AWS-Projects-With-Python\\EC2\\script.txt").read()
         )
         inst = instance[0]
         inst.wait_until_running()
